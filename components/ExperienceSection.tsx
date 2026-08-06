@@ -1,0 +1,191 @@
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { Sparkles, Leaf, Clock, ShieldCheck } from "lucide-react";
+import type { SiteContent } from "@/lib/types";
+import { defaultContent } from "@/lib/content-defaults";
+
+const features = [
+  {
+    icon: Sparkles,
+    title: "Interior Boutique",
+    desc: "Ruang tunggu seperti lounge hotel bintang lima.",
+  },
+  {
+    icon: Leaf,
+    title: "Healing Environment",
+    desc: "Pencahayaan alami, tanaman hidup, dan aromaterapi lembut.",
+  },
+  {
+    icon: Clock,
+    title: "Zero Queue Stress",
+    desc: "Sistem antrian digital — waktu Anda dihargai.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Privasi Terjaga",
+    desc: "Ruangan konsultasi soundproof untuk kenyamanan maksimal.",
+  },
+];
+
+const gradients = [
+  "from-sage/25 via-sage-light/15 to-terracotta-soft/20",
+  "from-terracotta/20 to-terracotta-soft/30",
+  "from-charcoal/8 to-sage/15",
+];
+
+interface ExperienceSectionProps {
+  content?: SiteContent["experience"];
+}
+
+export default function ExperienceSection({
+  content = defaultContent.experience,
+}: ExperienceSectionProps) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const images = content.images;
+
+  return (
+    <section id="pengalaman" className="px-6 py-32 md:px-12 lg:px-20">
+      <div ref={ref} className="mx-auto max-w-7xl">
+        <div className="grid gap-16 lg:grid-cols-12 lg:gap-8">
+          <motion.div
+            className="lg:col-span-5 lg:pt-12"
+            initial={{ opacity: 0, x: -30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="text-xs font-medium uppercase tracking-[0.25em] text-terracotta">
+              {content.eyebrow}
+            </span>
+            <h2 className="mt-4 font-serif text-4xl font-medium leading-tight tracking-tight text-charcoal md:text-5xl">
+              {content.title}
+              <br />
+              <span className="italic">{content.titleItalic}</span>
+            </h2>
+            <p className="mt-6 text-lg leading-relaxed text-charcoal/55">
+              {content.description}
+            </p>
+
+            <ul className="mt-12 space-y-6">
+              {features.map((f, i) => (
+                <motion.li
+                  key={f.title}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={inView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ delay: 0.15 * i, duration: 0.5 }}
+                  className="flex gap-4"
+                >
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-sage/10">
+                    <f.icon className="h-5 w-5 text-sage" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-charcoal">{f.title}</h3>
+                    <p className="mt-1 text-sm text-charcoal/50">{f.desc}</p>
+                  </div>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          <div className="relative lg:col-span-7">
+            <motion.div
+              className="grid grid-cols-2 gap-4 md:gap-5"
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <motion.div
+                className={`relative col-span-2 aspect-[16/10] overflow-hidden rounded-3xl bg-gradient-to-br ${gradients[0]}`}
+                whileHover={{ scale: 1.01 }}
+                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+              >
+                {images[0]?.url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={images[0].url}
+                    alt={images[0].label}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                )}
+                <div
+                  className={`relative z-10 flex h-full flex-col items-center justify-center p-8 text-center ${
+                    images[0]?.url
+                      ? "bg-gradient-to-t from-charcoal/45 via-transparent to-transparent"
+                      : ""
+                  }`}
+                >
+                  <span
+                    className={`text-xs uppercase tracking-[0.3em] ${
+                      images[0]?.url ? "text-cream/75" : "text-charcoal/30"
+                    }`}
+                  >
+                    {images[0]?.label}
+                  </span>
+                  <p
+                    className={`mt-3 font-serif text-2xl md:text-3xl ${
+                      images[0]?.url ? "text-cream" : "text-charcoal/60"
+                    }`}
+                  >
+                    {images[0]?.caption}
+                  </p>
+                </div>
+              </motion.div>
+
+              {[1, 2].map((idx) => (
+                <motion.div
+                  key={idx}
+                  className={`relative aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br ${gradients[idx]}`}
+                  whileHover={{ scale: 1.03, y: -4 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  {images[idx]?.url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={images[idx].url}
+                      alt={images[idx].label}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  )}
+                  <div
+                    className={`relative z-10 flex h-full flex-col justify-end p-6 ${
+                      images[idx]?.url
+                        ? "bg-gradient-to-t from-charcoal/45 via-transparent to-transparent"
+                        : ""
+                    }`}
+                  >
+                    <span
+                      className={`text-xs uppercase tracking-[0.2em] ${
+                        images[idx]?.url ? "text-cream/75" : "text-charcoal/35"
+                      }`}
+                    >
+                      {images[idx]?.label}
+                    </span>
+                    <p
+                      className={`mt-2 font-serif text-xl ${
+                        images[idx]?.url ? "text-cream" : "text-charcoal/55"
+                      }`}
+                    >
+                      {images[idx]?.caption}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <motion.div
+              className="absolute -bottom-6 -left-4 rounded-2xl border border-charcoal/6 bg-cream px-6 py-4 shadow-lg md:-left-8"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
+            >
+              <p className="font-serif text-3xl font-medium text-charcoal">4.9</p>
+              <p className="text-xs text-charcoal/45">Rating kepuasan pasien</p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
