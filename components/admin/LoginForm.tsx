@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -38,12 +38,12 @@ export default function LoginForm() {
     <div className="admin-root flex min-h-screen items-center justify-center bg-[#F3F2EE] px-4">
       <div className="w-full max-w-md rounded-3xl border border-charcoal/8 bg-cream p-8 shadow-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-charcoal text-cream">
-            <Lock className="h-5 w-5" />
+          <div className="mx-auto mb-5 flex justify-center">
+            <BrandLogo variant="framed" className="h-14" priority />
           </div>
-          <h1 className="font-serif text-3xl text-charcoal">Admin Login</h1>
+          <h1 className="font-serif text-2xl text-charcoal">Admin Login</h1>
           <p className="mt-2 text-sm text-charcoal/50">
-            Amalia Medical Center · Content Manager
+            Content Manager
           </p>
         </div>
 

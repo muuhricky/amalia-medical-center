@@ -57,7 +57,7 @@ export default function MagneticButton({
         className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(138,154,123,0.15) 0%, transparent 70%)",
+            "radial-gradient(circle at center, rgba(63,154,90,0.18) 0%, transparent 70%)",
         }}
       />
     </>

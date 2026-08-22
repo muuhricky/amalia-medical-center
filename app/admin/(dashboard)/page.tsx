@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getContent } from "@/lib/content";
 import { getMediaLibrary, formatBytes } from "@/lib/media";
-import { FileText, Images, Upload } from "lucide-react";
+import { FileText, Images, Upload, PanelsTopLeft, ArrowRight } from "lucide-react";
 
 export default async function AdminOverviewPage() {
   const [content, media] = await Promise.all([getContent(), getMediaLibrary()]);
@@ -47,6 +47,28 @@ export default async function AdminOverviewPage() {
         </p>
       </div>
 
+      <Link
+        href="/admin/builder"
+        className="group flex flex-col gap-4 rounded-2xl border border-sage/25 bg-gradient-to-br from-sage/10 via-cream to-terracotta/10 p-6 transition hover:border-sage/45 md:flex-row md:items-center md:justify-between"
+      >
+        <div className="flex items-start gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sage/15 text-sage">
+            <PanelsTopLeft className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="font-serif text-2xl text-charcoal">Page Builder</h2>
+            <p className="mt-1 max-w-lg text-sm text-charcoal/55">
+              Drag & drop kotak foto — ganti gambar, zoom, bentuk kotak/bulat,
+              dan tulisan tanpa coding.
+            </p>
+          </div>
+        </div>
+        <span className="inline-flex items-center gap-2 self-start rounded-xl bg-sage px-4 py-2.5 text-sm font-medium text-cream transition group-hover:bg-sage/90 md:self-center">
+          Buka Builder
+          <ArrowRight className="h-4 w-4" />
+        </span>
+      </Link>
+
       <div className="grid gap-4 md:grid-cols-3">
         {cards.map((card) => (
           <Link
@@ -71,22 +93,22 @@ export default async function AdminOverviewPage() {
           <h2 className="font-serif text-xl">Alur kerja cepat</h2>
           <ol className="mt-4 space-y-3 text-sm text-charcoal/65">
             <li>
-              <span className="font-medium text-charcoal">1.</span> Buka{" "}
+              <span className="font-medium text-charcoal">1.</span> Upload di{" "}
               <Link href="/admin/media" className="text-sage underline">
                 Media Library
-              </Link>{" "}
-              → upload gambar/video
+              </Link>
             </li>
             <li>
-              <span className="font-medium text-charcoal">2.</span> Buka{" "}
+              <span className="font-medium text-charcoal">2.</span> Susun visual di{" "}
+              <Link href="/admin/builder" className="text-sage underline">
+                Page Builder
+              </Link>
+            </li>
+            <li>
+              <span className="font-medium text-charcoal">3.</span> Edit teks panjang di{" "}
               <Link href="/admin/konten" className="text-sage underline">
                 Konten Website
-              </Link>{" "}
-              → pilih media untuk Hero / Experience / Poli Umum
-            </li>
-            <li>
-              <span className="font-medium text-charcoal">3.</span> Simpan, lalu
-              cek tampilan di website publik
+              </Link>
             </li>
           </ol>
         </div>

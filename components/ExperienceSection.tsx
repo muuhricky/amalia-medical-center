@@ -4,6 +4,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Sparkles, Leaf, Clock, ShieldCheck } from "lucide-react";
 import type { SiteContent } from "@/lib/types";
+import type { BuilderBlock } from "@/lib/builder-types";
+import { SHAPE_CLASS } from "@/lib/builder-types";
 import { defaultContent } from "@/lib/content-defaults";
 
 const features = [
@@ -37,14 +39,47 @@ const gradients = [
 
 interface ExperienceSectionProps {
   content?: SiteContent["experience"];
+  blocks?: BuilderBlock[];
+}
+
+function visualFrom(
+  blocks: BuilderBlock[] | undefined,
+  index: number,
+  fallback: { url: string; label: string; caption: string }
+) {
+  const b = blocks?.[index];
+  if (!b) {
+    return {
+      url: fallback.url,
+      label: fallback.label,
+      caption: fallback.caption,
+      shape: "rounded" as const,
+      zoom: 100,
+      posX: 50,
+      posY: 50,
+    };
+  }
+  return {
+    url: b.imageUrl || fallback.url,
+    label: b.title || fallback.label,
+    caption: b.subtitle || fallback.caption,
+    shape: b.shape,
+    zoom: b.zoom,
+    posX: b.posX,
+    posY: b.posY,
+  };
 }
 
 export default function ExperienceSection({
   content = defaultContent.experience,
+  blocks,
 }: ExperienceSectionProps) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const images = content.images;
+  const main = visualFrom(blocks, 0, images[0] || { url: "", label: "", caption: "" });
+  const sideA = visualFrom(blocks, 1, images[1] || { url: "", label: "", caption: "" });
+  const sideB = visualFrom(blocks, 2, images[2] || { url: "", label: "", caption: "" });
 
   return (
     <section id="pengalaman" className="px-6 py-32 md:px-12 lg:px-20">
@@ -89,7 +124,7 @@ export default function ExperienceSection({
             </ul>
           </motion.div>
 
-          <div className="relative lg:col-span-7">
+          <div className="relative mb-10 lg:col-span-7 lg:mb-14">
             <motion.div
               className="grid grid-cols-2 gap-4 md:gap-5"
               initial={{ opacity: 0, y: 40 }}
@@ -97,77 +132,85 @@ export default function ExperienceSection({
               transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
               <motion.div
-                className={`relative col-span-2 aspect-[16/10] overflow-hidden rounded-3xl bg-gradient-to-br ${gradients[0]}`}
+                className={`relative col-span-2 aspect-[16/10] overflow-hidden bg-gradient-to-br ${gradients[0]} ${SHAPE_CLASS[main.shape]}`}
                 whileHover={{ scale: 1.01 }}
                 transition={{ type: "spring", stiffness: 200, damping: 25 }}
               >
-                {images[0]?.url && (
+                {main.url && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={images[0].url}
-                    alt={images[0].label}
+                    src={main.url}
+                    alt={main.label}
                     className="absolute inset-0 h-full w-full object-cover"
+                    style={{
+                      objectPosition: `${main.posX}% ${main.posY}%`,
+                      transform: `scale(${main.zoom / 100})`,
+                    }}
                   />
                 )}
                 <div
                   className={`relative z-10 flex h-full flex-col items-center justify-center p-8 text-center ${
-                    images[0]?.url
+                    main.url
                       ? "bg-gradient-to-t from-charcoal/45 via-transparent to-transparent"
                       : ""
                   }`}
                 >
                   <span
                     className={`text-xs uppercase tracking-[0.3em] ${
-                      images[0]?.url ? "text-cream/75" : "text-charcoal/30"
+                      main.url ? "text-cream/75" : "text-charcoal/30"
                     }`}
                   >
-                    {images[0]?.label}
+                    {main.label}
                   </span>
                   <p
                     className={`mt-3 font-serif text-2xl md:text-3xl ${
-                      images[0]?.url ? "text-cream" : "text-charcoal/60"
+                      main.url ? "text-cream" : "text-charcoal/60"
                     }`}
                   >
-                    {images[0]?.caption}
+                    {main.caption}
                   </p>
                 </div>
               </motion.div>
 
-              {[1, 2].map((idx) => (
+              {[sideA, sideB].map((img, idx) => (
                 <motion.div
-                  key={idx}
-                  className={`relative aspect-[4/5] overflow-hidden rounded-3xl bg-gradient-to-br ${gradients[idx]}`}
+                  key={img.label + idx}
+                  className={`relative aspect-[4/5] overflow-hidden bg-gradient-to-br ${gradients[idx + 1]} ${SHAPE_CLASS[img.shape]}`}
                   whileHover={{ scale: 1.03, y: -4 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
-                  {images[idx]?.url && (
+                  {img.url && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={images[idx].url}
-                      alt={images[idx].label}
+                      src={img.url}
+                      alt={img.label}
                       className="absolute inset-0 h-full w-full object-cover"
+                      style={{
+                        objectPosition: `${img.posX}% ${img.posY}%`,
+                        transform: `scale(${img.zoom / 100})`,
+                      }}
                     />
                   )}
                   <div
                     className={`relative z-10 flex h-full flex-col justify-end p-6 ${
-                      images[idx]?.url
+                      img.url
                         ? "bg-gradient-to-t from-charcoal/45 via-transparent to-transparent"
                         : ""
                     }`}
                   >
                     <span
                       className={`text-xs uppercase tracking-[0.2em] ${
-                        images[idx]?.url ? "text-cream/75" : "text-charcoal/35"
+                        img.url ? "text-cream/75" : "text-charcoal/35"
                       }`}
                     >
-                      {images[idx]?.label}
+                      {img.label}
                     </span>
                     <p
                       className={`mt-2 font-serif text-xl ${
-                        images[idx]?.url ? "text-cream" : "text-charcoal/55"
+                        img.url ? "text-cream" : "text-charcoal/55"
                       }`}
                     >
-                      {images[idx]?.caption}
+                      {img.caption}
                     </p>
                   </div>
                 </motion.div>
@@ -175,13 +218,13 @@ export default function ExperienceSection({
             </motion.div>
 
             <motion.div
-              className="absolute -bottom-6 -left-4 rounded-2xl border border-charcoal/6 bg-cream px-6 py-4 shadow-lg md:-left-8"
+              className="absolute -bottom-12 left-3 rounded-2xl border border-charcoal/6 bg-cream/95 px-5 py-3 shadow-md backdrop-blur-sm md:-bottom-14 md:left-4"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
               transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
             >
-              <p className="font-serif text-3xl font-medium text-charcoal">4.9</p>
-              <p className="text-xs text-charcoal/45">Rating kepuasan pasien</p>
+              <p className="font-serif text-2xl font-medium text-charcoal">4.9</p>
+              <p className="text-[11px] text-charcoal/45">Rating kepuasan pasien</p>
             </motion.div>
           </div>
         </div>

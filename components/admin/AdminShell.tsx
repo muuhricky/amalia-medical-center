@@ -10,11 +10,14 @@ import {
   LogOut,
   Menu,
   X,
+  PanelsTopLeft,
 } from "lucide-react";
 import { useState } from "react";
+import BrandLogo from "@/components/BrandLogo";
 
 const nav = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/builder", label: "Page Builder", icon: PanelsTopLeft },
   { href: "/admin/media", label: "Media Library", icon: Images },
   { href: "/admin/konten", label: "Konten Website", icon: FileText },
 ];
@@ -40,8 +43,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         >
           <div className="flex h-full flex-col px-5 py-6">
             <div className="mb-10 px-2">
-              <p className="font-serif text-xl">Amalia</p>
-              <p className="mt-1 text-[10px] uppercase tracking-[0.3em] text-cream/40">
+              <BrandLogo variant="mark" className="h-8 brightness-110" />
+              <p className="mt-2 text-[10px] uppercase tracking-[0.3em] text-cream/40">
                 Content Admin
               </p>
             </div>

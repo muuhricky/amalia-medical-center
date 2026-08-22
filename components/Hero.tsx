@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Star } from "lucide-react";
 import MagneticButton from "./MagneticButton";
 import type { SiteContent } from "@/lib/types";
 import { defaultContent } from "@/lib/content-defaults";
@@ -109,25 +109,31 @@ export default function Hero({
       <OrganicBlob />
 
       {content.mediaUrl && (
-        <div className="pointer-events-none absolute inset-y-16 right-0 hidden w-[42%] overflow-hidden rounded-l-[2.5rem] opacity-90 lg:block">
-          {content.mediaType === "video" ? (
-            <video
-              src={content.mediaUrl}
-              className="h-full w-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={content.mediaUrl}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-r from-cream via-cream/40 to-transparent" />
+        <div className="pointer-events-none absolute inset-y-8 right-0 hidden w-[48%] lg:block">
+          <div className="relative h-full w-full overflow-hidden [mask-image:linear-gradient(90deg,transparent_0%,rgba(0,0,0,0.25)_14%,black_38%)] [-webkit-mask-image:linear-gradient(90deg,transparent_0%,rgba(0,0,0,0.25)_14%,black_38%)]">
+            {content.mediaType === "video" ? (
+              <video
+                src={content.mediaUrl}
+                className="h-full w-full object-cover object-[center_42%] opacity-[0.72] saturate-[0.72] contrast-[0.88] brightness-[1.08]"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={content.mediaUrl}
+                alt=""
+                className="h-full w-full object-cover object-[center_42%] opacity-[0.72] saturate-[0.72] contrast-[0.88] brightness-[1.08]"
+              />
+            )}
+            {/* Soft cream wash — menyatu ke background, tanpa tepi keras */}
+            <div className="absolute inset-0 bg-gradient-to-r from-cream from-[8%] via-cream/75 via-[42%] to-cream/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-cream/85 via-cream/10 to-cream/50" />
+            <div className="absolute inset-0 bg-gradient-to-b from-cream/40 via-transparent to-cream/70" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_45%,transparent_35%,rgba(247,245,240,0.55)_100%)]" />
+          </div>
         </div>
       )}
 
@@ -137,11 +143,24 @@ export default function Hero({
         initial="hidden"
         animate="visible"
       >
-        <motion.div variants={itemVariants} className="mb-8 flex items-center gap-3">
-          <span className="inline-block h-px w-12 bg-sage/60" />
-          <span className="text-xs font-medium uppercase tracking-[0.25em] text-sage">
-            {content.eyebrow}
-          </span>
+        <motion.div
+          variants={itemVariants}
+          className="mb-8 flex flex-wrap items-center gap-4"
+        >
+          <div className="flex items-center gap-3">
+            <span className="inline-block h-px w-12 bg-sage/60" />
+            <span className="text-xs font-medium uppercase tracking-[0.25em] text-sage">
+              {content.eyebrow}
+            </span>
+          </div>
+          <a
+            href="/#akreditasi"
+            data-cursor="hover"
+            className="inline-flex items-center gap-2 rounded-full border border-terracotta/25 bg-peach/80 px-3 py-1.5 text-[11px] font-medium tracking-wide text-charcoal/70 transition hover:border-terracotta/45 hover:bg-peach"
+          >
+            <Star className="h-3 w-3 fill-terracotta text-terracotta" />
+            Akreditasi Paripurna
+          </a>
         </motion.div>
 
         <motion.h1

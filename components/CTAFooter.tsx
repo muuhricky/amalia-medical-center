@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { MessageCircle, MapPin, Phone } from "lucide-react";
 import MagneticButton from "./MagneticButton";
+import BrandLogo from "@/components/BrandLogo";
 import type { SiteContent } from "@/lib/types";
 import { defaultContent } from "@/lib/content-defaults";
 
@@ -33,7 +34,7 @@ export default function CTAFooter({
           className="pointer-events-none absolute inset-0 opacity-30"
           style={{
             background:
-              "radial-gradient(ellipse 60% 50% at 80% 20%, rgba(138,154,123,0.3) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 10% 80%, rgba(196,164,132,0.2) 0%, transparent 55%)",
+              "radial-gradient(ellipse 60% 50% at 80% 20%, rgba(63,154,90,0.32) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 10% 80%, rgba(224,138,60,0.22) 0%, transparent 55%)",
           }}
         />
 
@@ -84,15 +85,22 @@ export default function CTAFooter({
       <div className="border-t border-charcoal/8 px-6 py-12 md:px-12 lg:px-20">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="font-serif text-xl font-medium text-charcoal">
-              Amalia Medical Center
-            </p>
-            <p className="mt-1 text-sm text-charcoal/40">
-              © {new Date().getFullYear()} · Premium Healthcare Experience
+            <a href="/" data-cursor="hover" className="inline-block">
+              <BrandLogo variant="framed" className="h-16 sm:h-[4.5rem]" />
+            </a>
+            <p className="mt-3 text-sm text-charcoal/40">
+              © {new Date().getFullYear()} · Klinik Utama Amalia Medical Center
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 text-sm text-charcoal/50 md:items-end">
+          <div className="flex flex-col gap-4 text-sm text-charcoal/50 md:items-end">
+            <a
+              href="/#akreditasi"
+              data-cursor="hover"
+              className="text-xs tracking-wide text-sage transition hover:text-charcoal"
+            >
+              Lihat akreditasi & mitra →
+            </a>
             <span className="flex items-center gap-2">
               <MapPin className="h-4 w-4 text-sage" />
               {site.address}

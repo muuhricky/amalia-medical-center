@@ -8,37 +8,37 @@ export const defaultContent: SiteContent = {
     email: "hello@amaliamedical.id",
   },
   hero: {
-    eyebrow: "Est. 2018 · Jakarta",
+    eyebrow: "Klinik Utama · Terakreditasi Paripurna",
     headline: "Layanan Kesehatan Premium,",
     headlineAccent: "Dirancang",
     headlineEnd: "Untuk Anda.",
     subheadline:
       "Amalia Medical Center mendefinisikan ulang pengalaman medis dengan pendekatan modern, nyaman, dan personal.",
     ctaLabel: "Konsultasi Sekarang",
-    mediaUrl: "",
-    mediaType: "",
+    mediaUrl: "/media/exterior-clinic.jpg",
+    mediaType: "image",
   },
   experience: {
     eyebrow: "Pengalaman",
     title: "Fasilitas sekelas",
     titleItalic: "Boutique Hotel",
     description:
-      "Kami percaya lingkungan yang tenang dan estetis mempercepat proses penyembuhan. Setiap detail — dari kursi tunggu hingga ruang pemeriksaan — dirancang untuk memberikan rasa aman dan istimewa.",
+      "Kami percaya lingkungan yang tenang dan estetis mempercepat proses penyembuhan. Setiap detail — dari ruang tunggu hingga laboratorium — dirancang untuk memberikan rasa aman dan istimewa.",
     images: [
       {
-        url: "",
+        url: "/media/lobby-reception.jpg",
         label: "Lobby & Reception",
-        caption: "Ruang tunggu premium",
+        caption: "Ruang tunggu yang hangat & teratur",
       },
       {
-        url: "",
-        label: "Konsultasi",
-        caption: "Ruang privat",
+        url: "/media/radiology-care.jpg",
+        label: "Radiologi",
+        caption: "Diagnostik modern, perawatan lembut",
       },
       {
-        url: "",
+        url: "/media/lab-facility.jpg",
         label: "Laboratorium",
-        caption: "Teknologi terkini",
+        caption: "Teknologi klinis terkini",
       },
     ],
   },
@@ -49,8 +49,8 @@ export const defaultContent: SiteContent = {
     description:
       "Poli Umum Amalia Medical Center adalah pintu masuk kenyamanan medis Anda — pemeriksaan menyeluruh, dokter berpengalaman, dan suasana sekelas boutique wellness.",
     hours: "Senin–Sabtu · 08.00–20.00",
-    mediaUrl: "",
-    mediaType: "",
+    mediaUrl: "/media/doctor-portrait.jpg",
+    mediaType: "image",
   },
   updatedAt: new Date().toISOString(),
 };

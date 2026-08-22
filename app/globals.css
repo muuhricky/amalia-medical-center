@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #f9f9f6;
+  /* Soft earth base — warm paper, not stark white */
+  --color-cream: #f7f5f0;
   --color-charcoal: #1a1a1a;
-  --color-sage: #8a9a7b;
-  --color-sage-light: #b8c4ad;
-  --color-terracotta: #c4a484;
-  --color-terracotta-soft: #e8d5c4;
+
+  /* Brand green (from logo) — softened for pastel UI */
+  --color-sage: #3f9a5a;
+  --color-sage-light: #a8d0b4;
+  --color-sage-mist: #dceee2;
+
+  /* Brand orange (from EKG accent) — clay / soft apricot */
+  --color-terracotta: #e08a3c;
+  --color-terracotta-soft: #f3d2b0;
+  --color-peach: #faf0e4;
 
   --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
   --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
@@ -18,6 +25,18 @@ html {
 
 body {
   background-color: var(--color-cream);
+  background-image:
+    radial-gradient(
+      ellipse 90% 55% at 100% 0%,
+      color-mix(in srgb, var(--color-sage-mist) 55%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 45% at 0% 100%,
+      color-mix(in srgb, var(--color-peach) 70%, transparent),
+      transparent 50%
+    );
+  background-attachment: fixed;
   color: var(--color-charcoal);
   font-family: var(--font-sans);
   overflow-x: hidden;
@@ -37,22 +56,23 @@ body {
 
 body:has(.admin-root) {
   cursor: auto;
+  background-image: none;
 }
 
 ::selection {
-  background-color: color-mix(in srgb, var(--color-sage) 35%, transparent);
+  background-color: color-mix(in srgb, var(--color-sage) 28%, transparent);
   color: var(--color-charcoal);
 }
 
 .glow-sage {
   box-shadow:
-    0 0 40px color-mix(in srgb, var(--color-sage) 25%, transparent),
+    0 0 40px color-mix(in srgb, var(--color-sage) 22%, transparent),
     0 0 80px color-mix(in srgb, var(--color-sage) 10%, transparent);
 }
 
 .glow-terracotta {
   box-shadow:
-    0 0 40px color-mix(in srgb, var(--color-terracotta) 30%, transparent),
+    0 0 40px color-mix(in srgb, var(--color-terracotta) 28%, transparent),
     0 0 80px color-mix(in srgb, var(--color-terracotta) 12%, transparent);
 }
 
@@ -64,12 +84,12 @@ body:has(.admin-root) {
   background:
     radial-gradient(
       ellipse 80% 60% at 70% 20%,
-      color-mix(in srgb, var(--color-sage-light) 35%, transparent),
+      color-mix(in srgb, var(--color-sage-light) 40%, transparent),
       transparent 70%
     ),
     radial-gradient(
       ellipse 60% 50% at 20% 80%,
-      color-mix(in srgb, var(--color-terracotta-soft) 45%, transparent),
+      color-mix(in srgb, var(--color-terracotta-soft) 50%, transparent),
       transparent 65%
     );
 }

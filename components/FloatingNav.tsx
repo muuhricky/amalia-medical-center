@@ -5,13 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import BrandLogo from "@/components/BrandLogo";
 import { defaultContent } from "@/lib/content-defaults";
 
 const links = [
   { label: "Beranda", href: "/", match: "home" },
   { label: "Layanan", href: "/#layanan", match: "layanan" },
   { label: "Pengalaman", href: "/#pengalaman", match: "pengalaman" },
-  { label: "Poli Umum", href: "/layanan/poli-umum", match: "poli" },
+  { label: "Tim", href: "/#tim", match: "tim" },
+  { label: "Akreditasi", href: "/#akreditasi", match: "akreditasi" },
   { label: "Kontak", href: "/#kontak", match: "kontak" },
 ];
 
@@ -63,7 +65,7 @@ export default function FloatingNav({
       return;
     }
 
-    const sections = ["layanan", "pengalaman", "kontak"];
+    const sections = ["layanan", "pengalaman", "tim", "akreditasi", "kontak"];
     const observers: IntersectionObserver[] = [];
 
     sections.forEach((id) => {
@@ -108,12 +110,10 @@ export default function FloatingNav({
               <Link
                 href="/"
                 data-cursor="hover"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream text-charcoal transition hover:bg-sage-light md:h-11 md:w-11"
+                className="flex h-10 shrink-0 items-center justify-center rounded-full bg-cream px-2.5 transition hover:bg-sage-mist md:h-11 md:px-3"
                 aria-label="Amalia Medical Center"
               >
-                <span className="font-serif text-lg font-medium leading-none">
-                  A
-                </span>
+                <BrandLogo variant="mark" className="h-5 md:h-6" />
               </Link>
 
               <ul className="hidden items-center px-1 md:flex">
