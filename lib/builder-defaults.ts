@@ -103,6 +103,17 @@ export const defaultBuilder: BuilderData = {
           posY: 50,
         },
         {
+          id: "dr-rifqi",
+          imageUrl: "/media/dr-rifqi.jpg",
+          title: "dr. Rifqi Ramadhan",
+          subtitle: "Penanggung Jawab MCU On-Site",
+          shape: "rounded",
+          size: "m",
+          zoom: 100,
+          posX: 50,
+          posY: 40,
+        },
+        {
           id: "apt-walid",
           imageUrl: "/media/pharmacist.jpg",
           title: "apt. Walid, S.Farm., M.Clin.Pharm.",

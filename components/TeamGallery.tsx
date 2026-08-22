@@ -73,22 +73,33 @@ export default function TeamGallery({
           </p>
         </motion.div>
 
-        <div className="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {teamBlocks.map((p, i) => (
+        {(() => {
+          const topRow = teamBlocks.slice(0, 3);
+          const bottomRow = teamBlocks.slice(3);
+
+          const renderCard = (p: BuilderBlock, i: number, compact = false) => (
             <motion.figure
               key={p.id}
               initial={{ opacity: 0, y: 24 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.06 * i, duration: 0.55 }}
-              className={`group relative ${sizeClass(p.size)}`}
+              className="group relative"
             >
               <div
-                className={`relative aspect-[4/5] overflow-hidden bg-sage/10 ${SHAPE_CLASS[p.shape]}`}
+                className={`relative overflow-hidden bg-sage/10 ${SHAPE_CLASS[p.shape]} ${
+                  compact ? "aspect-[3/4]" : "aspect-[4/5]"
+                }`}
               >
                 {p.imageUrl && <BlockImage block={p} />}
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/15 to-transparent" />
-                <figcaption className="absolute inset-x-0 bottom-0 p-5 md:p-6">
-                  <p className="font-serif text-lg leading-snug text-cream md:text-xl">
+                <figcaption
+                  className={`absolute inset-x-0 bottom-0 ${compact ? "p-4" : "p-5 md:p-6"}`}
+                >
+                  <p
+                    className={`font-serif leading-snug text-cream ${
+                      compact ? "text-base md:text-lg" : "text-lg md:text-xl"
+                    }`}
+                  >
                     {p.title}
                   </p>
                   <p className="mt-1.5 text-xs leading-relaxed tracking-wide text-cream/75">
@@ -97,8 +108,31 @@ export default function TeamGallery({
                 </figcaption>
               </div>
             </motion.figure>
-          ))}
-        </div>
+          );
+
+          return (
+            <div className="mt-14 flex flex-col gap-5">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                {topRow.map((p, i) => renderCard(p, i))}
+              </div>
+              {bottomRow.length > 0 && (
+                <div
+                  className={`grid grid-cols-1 gap-5 sm:grid-cols-2 ${
+                    bottomRow.length === 4
+                      ? "lg:grid-cols-4"
+                      : bottomRow.length === 3
+                        ? "lg:grid-cols-3"
+                        : "lg:grid-cols-2"
+                  }`}
+                >
+                  {bottomRow.map((p, i) =>
+                    renderCard(p, i + topRow.length, bottomRow.length >= 4)
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         <motion.div
           initial={{ opacity: 0, y: 28 }}

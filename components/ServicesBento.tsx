@@ -7,12 +7,13 @@ import {
   Stethoscope,
   HeartPulse,
   Microscope,
-  Baby,
   Syringe,
   Activity,
   ArrowUpRight,
   RotateCcw,
 } from "lucide-react";
+import CardEnterOverlay from "@/components/CardEnterOverlay";
+import { serviceCardRoutes } from "@/lib/services";
 
 const services = [
   {
@@ -20,72 +21,72 @@ const services = [
     title: "Poli Umum",
     desc: "Pemeriksaan menyeluruh dengan dokter berpengalaman.",
     detail:
-      "Konsultasi awal yang tenang dan teliti — keluhan didengar, pemeriksaan dilakukan dengan nyaman, lalu rencana perawatan dijelaskan dengan bahasa yang mudah dipahami.",
+      "Konsultasi awal yang tenang dan teliti — keluhan didengar, pemeriksaan nyaman, lalu rencana perawatan dijelaskan dengan bahasa yang mudah dipahami.",
     icon: Stethoscope,
-    span: "col-span-1 row-span-1",
+    span: "col-span-1",
+    wide: false,
     accent: "from-sage/20 to-sage/5",
     backAccent: "from-sage/30 via-sage/15 to-cream",
-    href: "/layanan/poli-umum",
   },
   {
     id: "spesialis",
     title: "Dokter Spesialis",
     desc: "Jaringan spesialis terpercaya untuk setiap kebutuhan.",
     detail:
-      "Akses ke dokter spesialis yang relevan dengan kondisi Anda. Kami bantu arahkan rujukan yang tepat agar penanganan lebih cepat dan terarah.",
+      "Akses dokter spesialis yang relevan dengan kondisi Anda. Kami bantu arahkan rujukan tepat agar penanganan lebih cepat dan terarah.",
     icon: HeartPulse,
-    span: "col-span-1 md:col-span-2 row-span-1",
+    span: "col-span-1 md:col-span-2",
+    wide: true,
     accent: "from-terracotta/20 to-terracotta-soft/10",
     backAccent: "from-terracotta/25 via-terracotta-soft/20 to-cream",
-    href: "/#kontak",
   },
   {
     id: "mcu",
     title: "Medical Check Up",
     desc: "Paket MCU premium dengan laporan digital instan.",
     detail:
-      "Paket pemeriksaan kesehatan kerja dan umum dengan alur yang rapi — dari pengambilan sampel hingga hasil yang mudah dibaca untuk keputusan medis berikutnya.",
+      "Pemeriksaan kesehatan kerja dan umum dengan alur rapi — dari pengambilan sampel hingga hasil yang mudah dibaca.",
     icon: Microscope,
-    span: "col-span-1 md:col-span-2 row-span-1",
+    span: "col-span-1 md:col-span-2",
+    wide: true,
     accent: "from-sage-light/25 to-cream",
     backAccent: "from-sage-light/35 via-sage/10 to-cream",
-    href: "/#kontak",
   },
   {
-    id: "ibu-anak",
-    title: "Kesehatan Ibu & Anak",
-    desc: "Perawatan lembut dari kehamilan hingga tumbuh kembang.",
+    id: "penunjang",
+    title: "Pemeriksaan Penunjang",
+    desc: "Fasilitas diagnostik lengkap di dalam klinik.",
     detail:
-      "Pendampingan untuk ibu dan anak dengan pendekatan hangat — pemantauan tumbuh kembang, imunisasi, dan edukasi kesehatan keluarga.",
-    icon: Baby,
-    span: "col-span-1 row-span-1",
-    accent: "from-terracotta-soft/30 to-cream",
-    backAccent: "from-terracotta-soft/40 via-peach to-cream",
-    href: "/#kontak",
+      "Klinik dilengkapi alat penunjang seperti rontgen, USG, treadmill, laboratorium, dan peralatan pendukung lainnya — hasil lebih cepat tanpa perlu berpindah tempat.",
+    icon: Microscope,
+    span: "col-span-1",
+    wide: false,
+    accent: "from-charcoal/5 to-sage/10",
+    backAccent: "from-charcoal/8 via-sage/15 to-cream",
   },
   {
     id: "vaksinasi",
     title: "Vaksinasi",
     desc: "Imunisasi lengkap dengan standar internasional.",
     detail:
-      "Layanan imunisasi untuk dewasa dan kebutuhan khusus perjalanan atau pekerjaan. Stok dan prosedur mengikuti standar keamanan vaksin yang berlaku.",
+      "Imunisasi dewasa dan kebutuhan perjalanan/pekerjaan, dengan prosedur sesuai standar keamanan vaksin.",
     icon: Syringe,
-    span: "col-span-1 row-span-1",
+    span: "col-span-1",
+    wide: false,
     accent: "from-sage/15 to-cream",
     backAccent: "from-sage/25 via-sage-mist to-cream",
-    href: "/#kontak",
   },
   {
-    id: "fisioterapi",
-    title: "Fisioterapi",
-    desc: "Rehabilitasi modern untuk pemulihan optimal.",
+    id: "hiperkes",
+    title: "Pemeriksaan Kesehatan Tenaga Kerja",
+    desc: "MCU & Hiperkes untuk kebutuhan perusahaan dan pekerja.",
     detail:
-      "Program rehabilitasi untuk pemulihan gerak dan mengurangi nyeri — disusun sesuai kondisi Anda agar kembali aktif dengan aman.",
+      "Pemeriksaan kesehatan kerja sesuai standar — cocok untuk pre-employment, periodic check, dan persyaratan perusahaan maupun penempatan kerja.",
     icon: Activity,
-    span: "col-span-1 md:col-span-2 row-span-1",
-    accent: "from-charcoal/5 to-sage/10",
-    backAccent: "from-charcoal/8 via-sage/15 to-cream",
-    href: "/#kontak",
+    span: "col-span-1 md:col-span-2",
+    wide: true,
+    accent: "from-terracotta-soft/30 to-cream",
+    backAccent: "from-terracotta-soft/40 via-peach to-cream",
   },
 ];
 
@@ -94,18 +95,45 @@ export default function ServicesBento() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const router = useRouter();
   const [flippedId, setFlippedId] = useState<string | null>(null);
+  const [enter, setEnter] = useState<{
+    id: string;
+    x: number;
+    y: number;
+  } | null>(null);
 
   const flip = (id: string) => {
+    if (enter) return;
     setFlippedId((prev) => (prev === id ? null : id));
   };
 
-  const goFurther = (href: string, e: React.MouseEvent) => {
+  const goFurther = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    router.push(href);
+    const route = serviceCardRoutes[id];
+    if (!route || enter) return;
+
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setEnter({
+      id,
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    });
+
+    window.setTimeout(() => {
+      router.push(route.href);
+    }, 480);
   };
+
+  const activeRoute = enter ? serviceCardRoutes[enter.id] : null;
 
   return (
     <section id="layanan" className="px-6 py-32 md:px-12 lg:px-20">
+      <CardEnterOverlay
+        active={!!enter}
+        accentFrom={activeRoute?.accentFrom || "rgba(63,154,90,0.3)"}
+        accentTo={activeRoute?.accentTo || "rgba(247,245,240,1)"}
+        origin={enter ? { x: enter.x, y: enter.y } : null}
+      />
+
       <div ref={ref} className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -129,7 +157,7 @@ export default function ServicesBento() {
           </p>
         </motion.div>
 
-        <div className="grid auto-rows-[minmax(200px,auto)] grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
           {services.map((service, i) => {
             const isFlipped = flippedId === service.id;
 
@@ -158,7 +186,7 @@ export default function ServicesBento() {
                       flip(service.id);
                     }
                   }}
-                  className="group relative h-full min-h-[200px] w-full cursor-pointer"
+                  className="group relative h-[320px] w-full cursor-pointer sm:h-[300px] md:h-[280px] lg:h-[300px]"
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   <div
@@ -168,60 +196,83 @@ export default function ServicesBento() {
                       transform: isFlipped ? "rotateX(180deg)" : "rotateX(0deg)",
                     }}
                   >
-                    {/* FRONT */}
                     <article
-                      className={`absolute inset-0 flex flex-col justify-between overflow-hidden rounded-3xl border border-charcoal/6 bg-gradient-to-br p-8 ${service.accent}`}
-                      style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+                      className={`absolute inset-0 flex flex-col justify-between rounded-3xl border border-charcoal/6 bg-gradient-to-br p-6 sm:p-7 ${service.accent}`}
+                      style={{
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden",
+                      }}
                     >
                       <div className="flex items-start justify-between">
                         <service.icon className="h-7 w-7 text-charcoal/40 transition-colors duration-500 group-hover:text-sage" />
                         <ArrowUpRight className="h-5 w-5 text-charcoal/20" />
                       </div>
-                      <div className="mt-auto pt-8">
-                        <h3 className="font-serif text-2xl font-medium text-charcoal">
+                      <div>
+                        <h3 className="font-serif text-xl font-medium text-charcoal sm:text-2xl">
                           {service.title}
                         </h3>
                         <p className="mt-2 text-sm leading-relaxed text-charcoal/50">
                           {service.desc}
                         </p>
-                        <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-charcoal/35">
+                        <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-charcoal/35">
                           Ketuk untuk membalik
                         </p>
                       </div>
                     </article>
 
-                    {/* BACK */}
                     <article
-                      className={`absolute inset-0 flex flex-col overflow-hidden rounded-3xl border border-charcoal/8 bg-gradient-to-br p-7 md:p-8 ${service.backAccent}`}
+                      className={`absolute inset-0 flex flex-col rounded-3xl border border-charcoal/8 bg-gradient-to-br ${service.backAccent} ${
+                        service.wide
+                          ? "px-7 py-6 sm:px-10 sm:py-7"
+                          : "px-5 py-5 sm:px-6 sm:py-6"
+                      }`}
                       style={{
                         backfaceVisibility: "hidden",
                         WebkitBackfaceVisibility: "hidden",
                         transform: "rotateX(180deg)",
                       }}
                     >
-                      <div className="flex items-start justify-between gap-3">
-                        <p className="font-serif text-lg text-charcoal md:text-xl">
+                      <div className="flex shrink-0 items-start justify-between gap-2">
+                        <p className="font-serif text-base leading-tight text-charcoal sm:text-lg">
                           {service.title}
                         </p>
-                        <span className="inline-flex items-center gap-1 rounded-full border border-charcoal/10 bg-cream/70 px-2 py-1 text-[10px] text-charcoal/45">
+                        <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-charcoal/10 bg-cream/70 px-2 py-1 text-[10px] text-charcoal/45">
                           <RotateCcw className="h-3 w-3" />
                           Balik
                         </span>
                       </div>
 
-                      <div className="flex flex-1 flex-col items-center justify-center px-1 py-4 text-center">
-                        <p className="max-w-[22rem] text-sm leading-relaxed text-charcoal/65 md:text-[15px]">
+                      <div
+                        className={`flex min-h-0 flex-1 flex-col justify-center ${
+                          service.wide
+                            ? "items-start py-3 text-left md:max-w-xl"
+                            : "items-center py-2 text-center"
+                        }`}
+                      >
+                        <p
+                          className={`leading-relaxed text-charcoal/65 ${
+                            service.wide
+                              ? "text-sm sm:text-[15px]"
+                              : "text-[13px] sm:text-sm"
+                          }`}
+                        >
                           {service.detail}
                         </p>
+                      </div>
 
+                      <div
+                        className={`shrink-0 pt-1 ${
+                          service.wide ? "flex justify-start" : "flex justify-center"
+                        }`}
+                      >
                         <button
                           type="button"
                           data-cursor="hover"
-                          onClick={(e) => goFurther(service.href, e)}
-                          className="mt-6 inline-flex items-center gap-2 rounded-full border border-sage/30 bg-cream/90 px-5 py-2.5 text-sm font-medium text-sage shadow-sm transition hover:border-sage/50 hover:bg-cream"
+                          onClick={(e) => goFurther(service.id, e)}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-sage/30 bg-cream/95 px-4 py-2 text-xs font-medium text-sage shadow-sm transition hover:border-sage/50 hover:bg-cream sm:gap-2 sm:px-5 sm:py-2.5 sm:text-sm"
                         >
-                          Klik di sini untuk lebih lanjut
-                          <ArrowUpRight className="h-4 w-4" />
+                          Klik untuk lebih lanjut
+                          <ArrowUpRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         </button>
                       </div>
                     </article>
