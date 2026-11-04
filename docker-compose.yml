@@ -1,0 +1,10 @@
+services:
+  web:
+    image: ghcr.io/muuhricky/amalia-medical-center:latest
+    container_name: amalia-medical-center
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+
